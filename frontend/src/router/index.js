@@ -114,6 +114,19 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/dv/dashboard-preview',
+        name: 'DashboardPreview',
+        component: () => import('@/views/railplus/dv/dashboardPreview/index'),
+        meta: { title: 'DashboardPreview', }
+      }
+    ]
+  },
 ]
 
 // 动态路由，基于用户权限动态去加载

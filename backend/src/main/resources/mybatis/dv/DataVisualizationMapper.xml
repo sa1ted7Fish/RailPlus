@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.railplus.dv.mapper.DataVisualizationMapper">
+
+    <select id="selectChartByChartName" parameterType="String" resultType="Map">
+        SELECT
+            chart_id chartId, chart_name chartName, chart_option chartOption, api, api_params apiParams, method
+        FROM
+            `rp_chart`
+                LEFT JOIN `rp_api` ON `rp_chart`.api_id = `rp_api`.api_id
+        where chart_name = #{chartName}
+    </select>
+
+    <select id="selectDashboardPreview" parameterType="String" resultType="Map">
+        SELECT
+            `rp_chart`.chart_id chartId, x, y, w, h, chart_option chartOption, api, api_params apiParams, method
+        FROM
+            rp_chart
+                LEFT JOIN rp_dashboard_details ON rp_chart.chart_id = rp_dashboard_details.chart_id
+                LEFT JOIN rp_api ON rp_api.api_id = rp_chart.api_id
+        where rp_dashboard_details.dashboard_id = #{dashboardId}
+    </select>
+
+</mapper>

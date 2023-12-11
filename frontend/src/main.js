@@ -42,6 +42,8 @@ import * as echarts from "echarts";
 import "echarts/lib/component/grid";
 //
 import * as VueGridLayout from "vue-grid-layout"
+//
+import RailPlusChart from "@/views/railplus/dv/components/RailPlusChart.vue";
 
 
 // 全局方法挂载
@@ -66,6 +68,7 @@ Vue.component('ImageUpload', ImageUpload)
 Vue.component('ImagePreview', ImagePreview)
 Vue.component("grid-layout", VueGridLayout.GridLayout)
 Vue.component("grid-item", VueGridLayout.GridItem)
+Vue.component("rp-chart", RailPlusChart)
 
 Vue.use(directive)
 Vue.use(plugins)

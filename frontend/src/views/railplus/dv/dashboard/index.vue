@@ -1,10 +1,9 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="${comment}" prop="dashboardName">
+      <el-form-item label="仪表板名称" prop="dashboardName">
         <el-input
           v-model="queryParams.dashboardName"
-          placeholder="请输入${comment}"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -48,32 +47,41 @@
           v-hasPermi="['dv:dashboard:remove']"
         >删除</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['dv:dashboard:export']"
-        >导出</el-button>
-      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="dashboardList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="${comment}" align="center" prop="dashboardId" />
-      <el-table-column label="${comment}" align="center" prop="dashboardName" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="仪表板名称" align="center" prop="dashboardName" />
+      <el-table-column label="编辑仪表板" align="center" >
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['dv:dashboard:edit']"
-          >修改</el-button>
+            @click="handleDashboardEdit(scope.row)"
+          >编辑</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="预览" align="center" >
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleDashboardPreview(scope.row)"
+          >预览</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-edit"-->
+<!--            @click="handleUpdate(scope.row)"-->
+<!--            v-hasPermi="['dv:dashboard:edit']"-->
+<!--          >修改</el-button>-->
           <el-button
             size="mini"
             type="text"
@@ -96,8 +104,8 @@
     <!-- 添加或修改Dashboard对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="${comment}" prop="dashboardName">
-          <el-input v-model="form.dashboardName" placeholder="请输入${comment}" />
+        <el-form-item label="仪表板名称" prop="dashboardName">
+          <el-input v-model="form.dashboardName" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -234,12 +242,22 @@ export default {
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
-    /** 导出按钮操作 */
-    handleExport() {
-      this.download('dv/dashboard/export', {
-        ...this.queryParams
-      }, `dashboard_${new Date().getTime()}.xlsx`)
+
+
+    handleDashboardEdit(row) {
+      this.$router.push({
+        name: 'DashboardEdit',
+        params: row
+      })
+    },
+
+    handleDashboardPreview(row) {
+      this.$router.push({
+        name: 'DashboardPreview',
+        params: row
+      })
     }
+
   }
 };
 </script>

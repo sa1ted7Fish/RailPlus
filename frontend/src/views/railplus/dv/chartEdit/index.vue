@@ -86,10 +86,10 @@
                 </el-form-item>
               </div>
               <div v-show="chartType === 'pie'">
-                <el-form-item label="数据项名称">
+                <el-form-item label="类目项">
                   <el-input v-model="pieOption.series[0].encode.itemName"></el-input>
                 </el-form-item>
-                <el-form-item label="数据项">
+                <el-form-item label="数值项">
                   <el-input v-model="pieOption.series[0].encode.value"></el-input>
                 </el-form-item>
               </div>
@@ -117,6 +117,7 @@
 
 <script>
 import { fetchGet } from '@/api/railplus/dv/common'
+import { addChart } from "@/api/railplus/dv/chart";
 
 require('echarts/theme/macarons') // echarts theme
 
@@ -158,10 +159,6 @@ export default {
           value: 'value',
           label: '数值'
         },
-        {
-          value: 'date',
-          label: '时间'
-        },
       ],
 
       chartOption: null,
@@ -199,10 +196,11 @@ export default {
         series: [
           {
             type: 'line',
+            smooth: false,
             encode: {
               x: null,
               y: null
-            }
+            },
           }
         ]
       },
@@ -231,6 +229,7 @@ export default {
     initApi() {
       this.apiName = this.$route.params.apiName
       this.api = this.$route.params.api
+      this.apiId = this.$route.params.apiId
       this.method = this.$route.params.method
       this.apiParams = JSON.parse(this.$route.params.apiParams);
 
@@ -252,14 +251,25 @@ export default {
           this.chartOption = this.pieOption
         }
 
-        console.log(this.chartOption)
-
         this.chart.setOption(this.chartOption)
       })
     },
 
     chartSave() {
+      let data = {
+        chartName: null,
+        apiId: null,
+        chartOption: null,
+      }
+      let option = JSON.parse(JSON.stringify(this.chartOption))
+      option.dataset.source = []
+      data.chartName = this.chartName;
+      data.apiId = this.apiId;
+      data.chartOption = JSON.stringify(option);
 
+      addChart(data).then(res => {
+        this.$modal.msgSuccess("新增成功");
+      })
     },
   },
 

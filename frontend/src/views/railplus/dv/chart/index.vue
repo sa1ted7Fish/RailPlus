@@ -55,13 +55,13 @@
       <el-table-column label="图表名称" align="center" prop="chartName" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['dv:chart:edit']"
-          >修改</el-button>
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-edit"-->
+<!--            @click="handleUpdate(scope.row)"-->
+<!--            v-hasPermi="['dv:chart:edit']"-->
+<!--          >修改</el-button>-->
           <el-button
             size="mini"
             type="text"
@@ -83,21 +83,7 @@
 
     <!-- 添加或修改Chart对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="${comment}" prop="chartName">
-          <el-input v-model="form.chartName" placeholder="请输入${comment}" />
-        </el-form-item>
-        <el-form-item label="${comment}" prop="apiId">
-          <el-input v-model="form.apiId" placeholder="请输入${comment}" />
-        </el-form-item>
-        <el-form-item label="${comment}" prop="chartOption">
-          <el-input v-model="form.chartOption" placeholder="请输入${comment}" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
+
     </el-dialog>
   </div>
 </template>

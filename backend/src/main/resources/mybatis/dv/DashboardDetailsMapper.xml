@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.railplus.dv.mapper.DashboardDetailsMapper">
+    
+    <resultMap type="DashboardDetails" id="DashboardDetailsResult">
+        <result property="dashboardId"    column="dashboard_id"    />
+        <result property="chartId"    column="chart_id"    />
+        <result property="x"    column="x"    />
+        <result property="y"    column="y"    />
+        <result property="w"    column="w"    />
+        <result property="h"    column="h"    />
+    </resultMap>
+
+    <sql id="selectDashboardDetailsVo">
+        select dashboard_id, chart_id, x, y, w, h from rp_dashboard_details
+    </sql>
+
+    <select id="selectDashboardDetailsList" parameterType="DashboardDetails" resultMap="DashboardDetailsResult">
+        <include refid="selectDashboardDetailsVo"/>
+        <where>  
+            <if test="dashboardId != null  and dashboardId != ''"> and dashboard_id = #{dashboardId}</if>
+            <if test="chartId != null  and chartId != ''"> and chart_id = #{chartId}</if>
+            <if test="x != null "> and x = #{x}</if>
+            <if test="y != null "> and y = #{y}</if>
+            <if test="w != null "> and w = #{w}</if>
+            <if test="h != null "> and h = #{h}</if>
+        </where>
+    </select>
+    
+    <select id="selectDashboardDetailsByDashboardId" parameterType="String" resultMap="DashboardDetailsResult">
+        <include refid="selectDashboardDetailsVo"/>
+        where dashboard_id = #{dashboardId}
+    </select>
+        
+    <insert id="insertDashboardDetails" parameterType="DashboardDetails">
+        insert into rp_dashboard_details
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dashboardId != null">dashboard_id,</if>
+            <if test="chartId != null">chart_id,</if>
+            <if test="x != null">x,</if>
+            <if test="y != null">y,</if>
+            <if test="w != null">w,</if>
+            <if test="h != null">h,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dashboardId != null">#{dashboardId},</if>
+            <if test="chartId != null">#{chartId},</if>
+            <if test="x != null">#{x},</if>
+            <if test="y != null">#{y},</if>
+            <if test="w != null">#{w},</if>
+            <if test="h != null">#{h},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDashboardDetails" parameterType="DashboardDetails">
+        update rp_dashboard_details
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="chartId != null">chart_id = #{chartId},</if>
+            <if test="x != null">x = #{x},</if>
+            <if test="y != null">y = #{y},</if>
+            <if test="w != null">w = #{w},</if>
+            <if test="h != null">h = #{h},</if>
+        </trim>
+        where dashboard_id = #{dashboardId}
+    </update>
+
+    <delete id="deleteDashboardDetailsByDashboardId" parameterType="String">
+        delete from rp_dashboard_details where dashboard_id = #{dashboardId}
+    </delete>
+
+    <delete id="deleteDashboardDetailsByDashboardIds" parameterType="String">
+        delete from rp_dashboard_details where dashboard_id in 
+        <foreach item="dashboardId" collection="array" open="(" separator="," close=")">
+            #{dashboardId}
+        </foreach>
+    </delete>
+</mapper>
