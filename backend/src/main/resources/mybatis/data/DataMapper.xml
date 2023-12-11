@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.railnet.data.mapper.DataMapper">
+    <select id="selectRentalByDate" parameterType="java.lang.String" resultType="Map">
+        SELECT
+            DATE_FORMAT( rental_date, '%Y-%m-%d' ) AS `date`,
+	    count( rental_id ) `count`
+        FROM
+            sakila.rental
+        WHERE
+            DATE_FORMAT( rental_date, '%Y-%m' ) = #{date}
+        GROUP BY
+            `date`
+    </select>
+
+    <select id="selectLanguagePercentageByCountry" parameterType="java.lang.String" resultType="Map">
+        SELECT
+            `Name` as Country,
+            `Language`,
+            Percentage
+        FROM
+            world_x.`countrylanguage`
+                LEFT JOIN world_x.country ON world_x.country.`Code` = world_x.countrylanguage.CountryCode
+        WHERE Name = #{country}
+        ORDER BY Percentage DESC
+    </select>
+</mapper>

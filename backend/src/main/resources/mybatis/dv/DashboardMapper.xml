@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.railplus.dv.mapper.DashboardMapper">
+    
+    <resultMap type="Dashboard" id="DashboardResult">
+        <result property="dashboardId"    column="dashboard_id"    />
+        <result property="dashboardName"    column="dashboard_name"    />
+    </resultMap>
+
+    <sql id="selectDashboardVo">
+        select dashboard_id, dashboard_name from rp_dashboard
+    </sql>
+
+    <select id="selectDashboardList" parameterType="Dashboard" resultMap="DashboardResult">
+        <include refid="selectDashboardVo"/>
+        <where>  
+            <if test="dashboardName != null  and dashboardName != ''"> and dashboard_name like concat('%', #{dashboardName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectDashboardByDashboardId" parameterType="String" resultMap="DashboardResult">
+        <include refid="selectDashboardVo"/>
+        where dashboard_id = #{dashboardId}
+    </select>
+        
+    <insert id="insertDashboard" parameterType="Dashboard">
+        insert into rp_dashboard
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dashboardId != null">dashboard_id,</if>
+            <if test="dashboardName != null">dashboard_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dashboardId != null">#{dashboardId},</if>
+            <if test="dashboardName != null">#{dashboardName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDashboard" parameterType="Dashboard">
+        update rp_dashboard
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dashboardName != null">dashboard_name = #{dashboardName},</if>
+        </trim>
+        where dashboard_id = #{dashboardId}
+    </update>
+
+    <delete id="deleteDashboardByDashboardId" parameterType="String">
+        delete from rp_dashboard where dashboard_id = #{dashboardId}
+    </delete>
+
+    <delete id="deleteDashboardByDashboardIds" parameterType="String">
+        delete from rp_dashboard where dashboard_id in 
+        <foreach item="dashboardId" collection="array" open="(" separator="," close=")">
+            #{dashboardId}
+        </foreach>
+    </delete>
+</mapper>

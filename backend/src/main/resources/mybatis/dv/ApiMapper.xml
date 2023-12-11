@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.railplus.dv.mapper.ApiMapper">
+    
+    <resultMap type="Api" id="ApiResult">
+        <result property="apiId"    column="api_id"    />
+        <result property="apiName"    column="api_name"    />
+        <result property="api"    column="api"    />
+        <result property="apiParams"    column="api_params"    />
+        <result property="method"    column="method"    />
+    </resultMap>
+
+    <sql id="selectApiVo">
+        select api_id, api_name, api, api_params, method from rp_api
+    </sql>
+
+    <select id="selectApiList" parameterType="Api" resultMap="ApiResult">
+        <include refid="selectApiVo"/>
+        <where>  
+            <if test="apiName != null  and apiName != ''"> and api_name like concat('%', #{apiName}, '%')</if>
+            <if test="api != null  and api != ''"> and api = #{api}</if>
+            <if test="apiParams != null  and apiParams != ''"> and api_params = #{apiParams}</if>
+            <if test="method != null  and method != ''"> and method = #{method}</if>
+        </where>
+    </select>
+    
+    <select id="selectApiByApiId" parameterType="String" resultMap="ApiResult">
+        <include refid="selectApiVo"/>
+        where api_id = #{apiId}
+    </select>
+        
+    <insert id="insertApi" parameterType="Api">
+        insert into rp_api
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="apiId != null">api_id,</if>
+            <if test="apiName != null">api_name,</if>
+            <if test="api != null">api,</if>
+            <if test="apiParams != null">api_params,</if>
+            <if test="method != null">method,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="apiId != null">#{apiId},</if>
+            <if test="apiName != null">#{apiName},</if>
+            <if test="api != null">#{api},</if>
+            <if test="apiParams != null">#{apiParams},</if>
+            <if test="method != null">#{method},</if>
+         </trim>
+    </insert>
+
+    <update id="updateApi" parameterType="Api">
+        update rp_api
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="apiName != null">api_name = #{apiName},</if>
+            <if test="api != null">api = #{api},</if>
+            <if test="apiParams != null">api_params = #{apiParams},</if>
+            <if test="method != null">method = #{method},</if>
+        </trim>
+        where api_id = #{apiId}
+    </update>
+
+    <delete id="deleteApiByApiId" parameterType="String">
+        delete from rp_api where api_id = #{apiId}
+    </delete>
+
+    <delete id="deleteApiByApiIds" parameterType="String">
+        delete from rp_api where api_id in 
+        <foreach item="apiId" collection="array" open="(" separator="," close=")">
+            #{apiId}
+        </foreach>
+    </delete>
+</mapper>

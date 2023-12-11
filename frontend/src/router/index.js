@@ -87,7 +87,33 @@ export const constantRoutes = [
         meta: { title: '个人中心', icon: 'user' }
       }
     ]
-  }
+  },
+  {
+    path: '',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/dv/chart-edit',
+        name: 'ChartEdit',
+        component: () => import('@/views/railplus/dv/chartEdit/index'),
+        meta: { title: 'ChartEdit', }
+      }
+    ]
+  },
+  {
+    path: '',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/dv/dashboard-edit',
+        name: 'DashboardEdit',
+        component: () => import('@/views/railplus/dv/dashboardEdit/index'),
+        meta: { title: 'DashboardEdit', }
+      }
+    ]
+  },
 ]
 
 // 动态路由，基于用户权限动态去加载

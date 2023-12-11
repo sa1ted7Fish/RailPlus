@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.railplus.dv.mapper.ChartMapper">
+    
+    <resultMap type="Chart" id="ChartResult">
+        <result property="chartId"    column="chart_id"    />
+        <result property="chartName"    column="chart_name"    />
+        <result property="apiId"    column="api_id"    />
+        <result property="chartOption"    column="chart_option"    />
+    </resultMap>
+
+    <sql id="selectChartVo">
+        select chart_id, chart_name, api_id, chart_option from rp_chart
+    </sql>
+
+    <select id="selectChartList" parameterType="Chart" resultMap="ChartResult">
+        <include refid="selectChartVo"/>
+        <where>  
+            <if test="chartName != null  and chartName != ''"> and chart_name like concat('%', #{chartName}, '%')</if>
+            <if test="apiId != null  and apiId != ''"> and api_id = #{apiId}</if>
+            <if test="chartOption != null  and chartOption != ''"> and chart_option = #{chartOption}</if>
+        </where>
+    </select>
+    
+    <select id="selectChartByChartId" parameterType="String" resultMap="ChartResult">
+        <include refid="selectChartVo"/>
+        where chart_id = #{chartId}
+    </select>
+        
+    <insert id="insertChart" parameterType="Chart">
+        insert into rp_chart
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="chartId != null">chart_id,</if>
+            <if test="chartName != null">chart_name,</if>
+            <if test="apiId != null">api_id,</if>
+            <if test="chartOption != null">chart_option,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="chartId != null">#{chartId},</if>
+            <if test="chartName != null">#{chartName},</if>
+            <if test="apiId != null">#{apiId},</if>
+            <if test="chartOption != null">#{chartOption},</if>
+         </trim>
+    </insert>
+
+    <update id="updateChart" parameterType="Chart">
+        update rp_chart
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="chartName != null">chart_name = #{chartName},</if>
+            <if test="apiId != null">api_id = #{apiId},</if>
+            <if test="chartOption != null">chart_option = #{chartOption},</if>
+        </trim>
+        where chart_id = #{chartId}
+    </update>
+
+    <delete id="deleteChartByChartId" parameterType="String">
+        delete from rp_chart where chart_id = #{chartId}
+    </delete>
+
+    <delete id="deleteChartByChartIds" parameterType="String">
+        delete from rp_chart where chart_id in 
+        <foreach item="chartId" collection="array" open="(" separator="," close=")">
+            #{chartId}
+        </foreach>
+    </delete>
+</mapper>
