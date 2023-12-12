@@ -17,7 +17,7 @@
         </el-card>
       </el-col>
       <el-col :span="18">
-        <div style="width: 100%; height: calc(100vh - 84px)">
+        <div style="width: 100%; min-height: calc(100vh - 84px)">
           <grid-layout :layout.sync="layout"
                        :col-num="colNum"
                        :row-height="30"
@@ -103,6 +103,7 @@ export default {
     },
 
     addChart() {
+      this.chartName = null;
       this.open = true;
     },
 

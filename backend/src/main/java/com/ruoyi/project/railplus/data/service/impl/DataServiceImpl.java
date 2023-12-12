@@ -1,7 +1,7 @@
-package com.ruoyi.project.railnet.data.service.impl;
+package com.ruoyi.project.railplus.data.service.impl;
 
-import com.ruoyi.project.railnet.data.mapper.DataMapper;
-import com.ruoyi.project.railnet.data.service.IDataService;
+import com.ruoyi.project.railplus.data.mapper.DataMapper;
+import com.ruoyi.project.railplus.data.service.IDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +22,10 @@ public class DataServiceImpl implements IDataService {
     @Override
     public List<Map<String, Object>> selectLanguagePercentageByCountry(String country) {
         return dataMapper.selectLanguagePercentageByCountry(country);
+    }
+
+    @Override
+    public List<Map<String, Object>> selectCityPopulationTop10() {
+        return dataMapper.selectCityPopulationTop10();
     }
 }

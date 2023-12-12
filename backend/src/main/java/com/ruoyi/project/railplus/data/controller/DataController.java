@@ -1,7 +1,7 @@
-package com.ruoyi.project.railnet.data.controller;
+package com.ruoyi.project.railplus.data.controller;
 
 import com.ruoyi.framework.aspectj.lang.annotation.Anonymous;
-import com.ruoyi.project.railnet.data.service.IDataService;
+import com.ruoyi.project.railplus.data.service.IDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,5 +24,10 @@ public class DataController {
     @GetMapping("/lp")
     public List<Map<String, Object>> languagePercentage(@RequestParam("country") String country) {
         return dataService.selectLanguagePercentageByCountry(country);
+    }
+
+    @GetMapping("/cp")
+    public List<Map<String, Object>> cityPopulation() {
+        return dataService.selectCityPopulationTop10();
     }
 }
